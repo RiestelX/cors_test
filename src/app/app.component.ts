@@ -16,12 +16,21 @@ export class AppComponent {
     // window.location.assign('edin://start');
     this.informationID = null;
     this.searching = true
-    this.agentService.getInformationID(this.idCardNumber).subscribe((res:any) => {
-      this.informationID = res.ResponseDetails;
-      this.searching = false
-      console.log(this.informationID);
-      
-    })
+    this.agentService.getInformationID(this.idCardNumber).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.informationID = res.ResponseDetails;
+        this.searching = false;
+      },
+      error: (error) => {
+        console.error('error:', error);
+        this.searching = false;
+      },
+      complete: () => {
+        console.log('completed');
+      }
+    });
+    
   }
   clear() {
     this.informationID = null;
